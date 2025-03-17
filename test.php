@@ -1,14 +1,12 @@
 <?php
-$host = "31.11.39.210";
-$db_name = "Sql1853582_1";
-$username = "Sql1853582";
-$password = "A5qSUd5JM94t-.E";
+$host = 'localhost';         // Cambiare se richiesto da Aruba
+$user = 'nome_utente_db';    // Nome utente MySQL
+$password = 'password_db';   // Password del database
+$database = 'nome_database'; // Nome del database
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connessione riuscita!";
-} catch (PDOException $e) {
-    echo "Errore di connessione: " . $e->getMessage();
+$conn = new mysqli($host, $user, $password, $database);
+
+// Verifica la connessione
+if ($conn->connect_error) {
+    die("Connessione fallita: " . $conn->connect_error);
 }
-?>
