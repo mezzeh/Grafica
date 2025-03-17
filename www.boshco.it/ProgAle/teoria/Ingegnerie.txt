@@ -1,0 +1,31 @@
+ANALISI PROGRAMMA STUDI
+DESCRIZIONE GENERALE
+Il software ha lo scopo di una PERMETTERE una ramificazione Di argomenti approfondibile eventualmente fino alla scelta della fine della fine della ramificazione
+cinque tipi di ramificazioni: dal più importante al meno importante 
+
+OBIETTIVI DEL SISTEMA
+⦁	consente l'inserimento e la gestione di formule nel formulario
+⦁	consente l'inserimento e la gestione di un piano di studio (corso)C con dentro(esami)
+⦁	consente l'inserimento e la gestione degli esami (materia)(con dentro argomenti)
+⦁	consente l'inserimento e la gestione degli argomenti con collegamento all'esercizio precedente(entita)(con dentro sottoargomenti)
+⦁	consente l'inserimento e la gestione degli argomenti (entita)(con dentro sottoargomenti)
+⦁	consente l'inserimento e la gestione degli argomenti (entita)(con dentro sottoargomenti)
+⦁	consente l'inserimento e la gestione dei sottoargomenti (under_entita)(con dentro gli esercizi precedenti)
+⦁	consente l'inserimento e la gestione degli esercizi precedenti (prev_exercise)(con dentro requisiti)
+RAGIONAMENTO 
+1.	piano di studio,
+2.	esame,
+3.	 argomento con c
+4.	figli argomenti    
+5.	  esercizi e descrizione
+6.	preliminirari o requisiti
+3 REQUISITI FUNZIONALI
+⦁	Il sistema permette l'inserimento di nuovi piani di studio
+⦁	Il sistema permette l'inserimento di nuovi esami
+⦁	Il sistema permette l'inserimento di nuovi argomenti
+⦁	Il sistema permette l'inserimento di nuovi figli argomenti
+⦁	Il sistema permette l'inserimento di nuovi esercizi di questo argomento
+⦁	Il sistema permette di scegliere se visualizzare gli esercizi dell'argomento precedente 
+ 4 ATTORI COINVOLTI
+Studente: inserisce o cerca  piani,esami,argomenti,figli,esercizi,
+sistema: inserisce i dati dati dallo studente.
