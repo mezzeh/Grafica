@@ -1,0 +1,94 @@
+(interscambio)
+L'idea era: ognuno ha il suo e ognuno vede quello degli altri.,
+l'admin puo gestire quelli di tutti, ma si deve autenticare, l'ospite, puo vedere il suo modificare il suo, 
+e vedere gli altri, Devo aggiungere il nome dell'utente di quel piano di studio.
+username e password.
+
+
+(post it e commenti)
+Possibilita di arrecare commenti al piano di studio, argomenti , sottoargomenti??
+
+(Riferimenti)
+Qunando inseriamo i requisiti, possiamo , riferirci direttamente a degli argomenti presenti nel programma.
+
+(Calendario)
+Data negli esami; Possibilita di programmare lo studio degli argomenti, con ricevimento delle mail.
+
+(opzione utente) segnare se lo si ha completati o no con una spunta in casella.
+
+
+Piano di lavoro per il sistema di gestione dei piani di studio
+Fase 1: Autenticazione e Gestione Base degli Utenti (Già in corso)
++++++++++++++++++++++++
+Sistema di login/registrazione utenti
+Ruoli utente (admin/user)
+Gestione dei piani di studio personali e visibilità (pubblico/privato)
++++++++++++++++++++++++++++++++++
+Fase 2: Sistema di Commenti e Interazione
+
+Commenti ai piani di studio, argomenti e sottoargomenti
+Visualizzazione dei commenti per elemento
+Possibilità di modificare/eliminare i propri commenti
++++++++++++++++++++++++++++++++++++++
+Fase 3: Riferimenti tra Elementi
+
+Collegamenti tra requisiti e argomenti esistenti
+Sistema per riferirsi ad argomenti quando si crea un nuovo requisito
+Visualizzazione dei collegamenti nelle pagine di dettaglio
+
+Fase 4: Calendario e Pianificazione
+
+Aggiunta di date agli esami
+Sistema di pianificazione dello studio
+Notifiche email per promemoria di studio
+
+Fase 5: Tracking del Progresso
+
+Caselle di spunta per segnare argomenti completati
+Visualizzazione dello stato di completamento
+Statistiche di progresso
+
+Fase 6: 
+prima idea:
+aggiunta di modelli modificabili, 
+	es: planner di cose da  fare
+	problemi: trovare abbastanza planner per tutti gli utenti,
+			renderli modificabili.
+	pro: possibilita di avere un diario personale 
+		avere tanti planner per ogni ambito personale
+		es: planner scolastico, planner uscite, planner spesa, lavorativo
+
+seconda idea:
+avere un calendario che si collega ai planner 
+		es: imposto che devo studiare dalle 18 alle 20 ma gia a quellora
+			avevo un obbiettivo  sportivo
+	problemi: database complesso
+	pro: avere un calendario aggiornato con i vari colori delle cose che si fa ed 
+	avere laccesso immediato per aggiungere determinate cose
+	Puntiamo tutto sulla comodidita di avere solo un foglio e di avercelo 
+	sempre sul proprio smartphone in linea con obbiettivi personale
+	e l bellezze di scrivere qualcosa su un modello e non a pagine bianca
+
+    Fase 7:
+    fare un disegno del css 
+
+
+
+*****************
+Implementare un sistema di notifiche per gli aggiornamenti nei piani condivisi
+Aggiungere funzionalità per esportare i piani di studio in PDF o altri formati
+Implementare la possibilità di commentare i vari elementi (come menzionato nei file di pianificazione)
+Aggiungere un sistema di tagging per facilitare la categorizzazione e la ricerca
+Implementare un calendario per la pianificazione dello studio (già previsto nei piani futuri)
+
+
+
+come posso implementare il codice in un sito,
+ avende già la sua forma;
+  per esempio mettendo 
+ una casella sul menù per passare ad una visualizzazione grafica degli elemnti(qurlla di prima), 
+ implementandolo, in cui
+  è presente anche il database.sql ma spiegami come dovrei
+  configurare la mia macchina sql e php in modo che in questo 
+  codice possa vedere in modo aggiornato tutto il database esistente, 
+  o in futuro solo piccole parti 
