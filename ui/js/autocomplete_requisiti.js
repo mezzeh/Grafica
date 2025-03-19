@@ -33,11 +33,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Attendi 300ms prima di eseguire la ricerca (per evitare troppe richieste)
             searchTimeout = setTimeout(function () {
-                // Percorso corretto all'API di ricerca
-                const baseUrl = '/ProgAle/api/search_avanzata.php';
+                // Percorso all'API di ricerca
+                const apiUrl = '/ProgAle/api/search_avanzata.php';
 
                 // Esegui la ricerca tramite AJAX
-                fetch(`${baseUrl}?q=${encodeURIComponent(query)}&type=${type}`)
+                fetch(`${apiUrl}?q=${encodeURIComponent(query)}&type=${type}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Errore nella risposta del server: ' + response.status);

@@ -14,18 +14,10 @@ class Database {
             $this->conn->exec("set names utf8");
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $exception) {
-            echo "Errorse di connessione: " . $exception->getMessage();
+            echo "Errore di connessione: " . $exception->getMessage();
         }
         
         return $this->conn;
     }
-    // Helper function to get the correct path to a page
-function getPagePath($page) {
-    if (strpos($_SERVER['PHP_SELF'], 'view_pages') !== false) {
-        return "../pages/$page";
-    } else {
-        return $page;
-    }
-}
 }
 ?>

@@ -4,6 +4,6 @@
         </footer>
     </div>
     <!-- Script JavaScript -->
-    <script src="../../ui/js/common.js"></script>
+    <script src="<?php echo getUrlPath('ui/js/common.js'); ?>"></script>
 </body>
 </html>

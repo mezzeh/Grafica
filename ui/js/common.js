@@ -32,9 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Debounce timer
     let debounceTimer;
 
-    // Get the site base path from the form action
-    const formAction = searchForm.getAttribute('action');
-    const basePath = formAction.substring(0, formAction.lastIndexOf('/pages/')) || '';
+    // Base URL for the search API
+    const apiUrl = '/ProgAle/api/search.php';
 
     // Search function
     const performSearch = (query) => {
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Make the AJAX request to the API
-            fetch(`${basePath}/api/search.php?q=${encodeURIComponent(query)}`)
+            fetch(`${apiUrl}?q=${encodeURIComponent(query)}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -87,16 +86,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (item.type === 'piano') icon = '📚';
             else if (item.type === 'esame') icon = '📝';
             else if (item.type === 'argomento') icon = '📌';
-
-            // Ensure URL is correct - prepend basePath if needed
-            let url = item.url;
-            if (url && !url.startsWith('http') && !url.startsWith('/')) {
-                url = `${basePath}/pages/${url}`;
-            }
+            else if (item.type === 'sottoargomento') icon = '📎';
+            else if (item.type === 'esercizio') icon = '📄';
 
             // Build the result item HTML
             resultItem.innerHTML = `
-                <a href="${url}">
+                <a href="${item.url}">
                     <div class="result-icon">${icon}</div>
                     <div class="result-content">
                         <div class="result-title">${highlightMatch(item.name, query)}</div>
@@ -159,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
-                window.location.href = formAction + '?q=' + encodeURIComponent(this.value.trim());
+                window.location.href = searchForm.action + '?q=' + encodeURIComponent(this.value.trim());
             }
         });
     }
@@ -172,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const createFormContainer = document.getElementById('createFormContainer');
     const cancelCreateBtn = document.getElementById('cancelCreateBtn');
 
-    // Mostra il form di creazione
+    // Show the creation form
     if (showCreateFormBtn && createFormContainer) {
         showCreateFormBtn.addEventListener('click', function () {
             createFormContainer.style.display = 'block';
@@ -180,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Nasconde il form di creazione
+    // Hide the creation form
     if (cancelCreateBtn && createFormContainer && showCreateFormBtn) {
         cancelCreateBtn.addEventListener('click', function () {
             createFormContainer.style.display = 'none';

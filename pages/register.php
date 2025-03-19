@@ -1,10 +1,13 @@
 <?php
+// Include path utilities
+require_once dirname(__DIR__) . '/config/paths.php';
+
 // Includi header (senza richiedere autenticazione)
-include_once '../ui/includes/header_no_auth.php';
+include_once getAbsolutePath('ui/includes/header_no_auth.php');
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/user.php';
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/user.php');
 
 // Inizializza variabili per messaggi
 $message = "";
@@ -12,7 +15,7 @@ $message_class = "";
 
 // Se l'utente è già loggato, reindirizza alla homepage
 if(isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    header("Location: " . getUrlPath('pages/index.php'));
     exit;
 }
 
@@ -99,9 +102,9 @@ if(isset($_POST['register'])) {
         </form>
         
         <div class="auth-links">
-            <p>Hai già un account? <a href="login.php">Accedi</a></p>
+            <p>Hai già un account? <a href="<?php echo getUrlPath('pages/login.php'); ?>">Accedi</a></p>
         </div>
     </div>
 </div>
 
-<?php include_once '../ui/includes/footer.php'; ?>
+<?php include_once getAbsolutePath('ui/includes/footer.php'); ?>

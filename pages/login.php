@@ -1,11 +1,15 @@
 <?php
 ob_start();
+
+// Include path utilities
+require_once dirname(__DIR__) . '/config/paths.php';
+
 // Includi header (senza richiedere autenticazione)
-include_once '../ui/includes/header_no_auth.php';
+include_once getAbsolutePath('ui/includes/header_no_auth.php');
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/user.php';
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/user.php');
 
 // Inizializza variabili per messaggi
 $message = "";
@@ -13,7 +17,7 @@ $message_class = "";
 
 // Se l'utente è già loggato, reindirizza alla homepage
 if(isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    header("Location: " . getUrlPath('pages/index.php'));
     exit;
 }
 
@@ -33,7 +37,7 @@ if(isset($_POST['login'])) {
         $_SESSION['is_admin'] = $user->isAdmin();
         
         // Redirect alla homepage
-        header("Location: index.php");
+        header("Location: " . getUrlPath('pages/index.php'));
         exit;
     } else {
         $message = "Username o password non validi.";
@@ -66,9 +70,9 @@ ob_end_flush();
         </form>
         
         <div class="auth-links">
-            <p>Non hai un account? <a href="register.php">Registrati</a></p>
+            <p>Non hai un account? <a href="<?php echo getUrlPath('pages/register.php'); ?>">Registrati</a></p>
         </div>
     </div>
 </div>
 
-<?php include_once '../ui/includes/footer.php'; ?>
+<?php include_once getAbsolutePath('ui/includes/footer.php'); ?>

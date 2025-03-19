@@ -13,13 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Determina il percorso base per l'API di ricerca
-    let apiPath = '../api/search.php';
-
-    // Adatta il percorso in base al nome del file corrente
-    const currentPage = window.location.pathname.split('/').pop();
-    if (currentPage.startsWith('view_')) {
-        apiPath = '../api/search.php'; // Manteniamo lo stesso percorso per le pagine view_
-    }
+    const apiPath = '/ProgAle/api/search.php';
 
     console.log('Sistema di ricerca inizializzato, API path:', apiPath);
 
@@ -30,14 +24,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const typeIcons = {
         'piano': '📚',
         'esame': '📝',
-        'argomento': '📌'
+        'argomento': '📌',
+        'sottoargomento': '📎',
+        'esercizio': '📄'
     };
 
     // Etichette per i tipi di risultati
     const typeLabels = {
         'piano': 'Piano di Studio',
         'esame': 'Esame',
-        'argomento': 'Argomento'
+        'argomento': 'Argomento',
+        'sottoargomento': 'Sottoargomento',
+        'esercizio': 'Esercizio'
     };
 
     // Gestione dell'input di ricerca
@@ -83,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             // Rendi cliccabile l'intero elemento di risultato
                             resultItem.addEventListener('click', function () {
-                                window.location.href = item.url;
+                                window.location.href = item.url.startsWith('/') ? item.url : '/ProgAle/' + item.url;
                             });
 
                             searchResults.appendChild(resultItem);

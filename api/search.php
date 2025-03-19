@@ -4,11 +4,16 @@
  * Restituisce i risultati filtrati in base alla query inserita
  */
 
-// Includi file di configurazione
-include_once '../config/database.php';
-include_once '../models/piano_di_studio.php';
-include_once '../models/esame.php';
-include_once '../models/argomento.php';
+// Includi il file di configurazione dei percorsi
+require_once __DIR__ . '/../config/paths.php';
+
+// Includi file di configurazione e modelli
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/piano_di_studio.php');
+include_once getAbsolutePath('models/esame.php');
+include_once getAbsolutePath('models/argomento.php');
+include_once getAbsolutePath('models/sottoargomento.php');
+include_once getAbsolutePath('models/esercizio.php');
 
 // Abilita CORS per le chiamate AJAX
 header("Access-Control-Allow-Origin: *");
@@ -45,7 +50,7 @@ if ($stmt && $stmt->rowCount() > 0) {
             'id' => $row['id'],
             'type' => 'piano',
             'name' => $row['nome'],
-            'url' => 'view_pages/view_piano.php?id=' . $row['id'],
+            'url' => getUrlPath('pages/view_pages/view_piano.php?id=' . $row['id']),
             'description' => substr($row['descrizione'], 0, 100) . '...'
         ];
     }
@@ -61,7 +66,7 @@ if ($stmt && $stmt->rowCount() > 0) {
             'id' => $row['id'],
             'type' => 'esame',
             'name' => $row['nome'],
-            'url' => 'view_pages/view_esame.php?id=' . $row['id'],
+            'url' => getUrlPath('pages/view_pages/view_esame.php?id=' . $row['id']),
             'description' => 'Codice: ' . $row['codice'] . ', Crediti: ' . $row['crediti']
         ];
     }
@@ -77,8 +82,40 @@ if ($stmt && $stmt->rowCount() > 0) {
             'id' => $row['id'],
             'type' => 'argomento',
             'name' => $row['titolo'],
-            'url' => 'view_pages/view_argomento.php?id=' . $row['id'],
+            'url' => getUrlPath('pages/view_pages/view_argomento.php?id=' . $row['id']),
             'description' => substr($row['descrizione'], 0, 100) . '...'
+        ];
+    }
+}
+
+// Cerca nei sottoargomenti
+$sottoargomento = new SottoArgomento($db);
+$stmt = $sottoargomento->search($query);
+
+if ($stmt && $stmt->rowCount() > 0) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $results[] = [
+            'id' => $row['id'],
+            'type' => 'sottoargomento',
+            'name' => $row['titolo'],
+            'url' => getUrlPath('pages/view_pages/view_sottoargomento.php?id=' . $row['id']),
+            'description' => substr($row['descrizione'], 0, 100) . '...'
+        ];
+    }
+}
+
+// Cerca negli esercizi
+$esercizio = new Esercizio($db);
+$stmt = $esercizio->search($query);
+
+if ($stmt && $stmt->rowCount() > 0) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $results[] = [
+            'id' => $row['id'],
+            'type' => 'esercizio',
+            'name' => $row['titolo'],
+            'url' => getUrlPath('pages/view_pages/view_esercizio.php?id=' . $row['id']),
+            'description' => substr($row['testo'], 0, 100) . '...'
         ];
     }
 }

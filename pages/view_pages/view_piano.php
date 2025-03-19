@@ -1,19 +1,23 @@
 <?php
 ob_start();
+
+// Include path utilities
+require_once dirname(dirname(__DIR__)) . '/config/paths.php';
+
 // Includi header
-include_once '../../ui/includes/header_view.php';
+include_once getAbsolutePath('ui/includes/header_view.php');
 
 // Includi file di configurazione e modelli
-include_once '../../config/database.php';
-include_once '../../models/piano_di_studio.php';
-include_once '../../models/esame.php';
-include_once '../../models/comments.php'; // Assicurati che questo sia il percorso corretto
-include_once '../components/comments/comments.php'; // Includi il file con le funzioni per i commenti
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/piano_di_studio.php');
+include_once getAbsolutePath('models/esame.php');
+include_once getAbsolutePath('models/comments.php'); 
+include_once getAbsolutePath('pages/components/comments/comments.php');
 
 // Verifica se è stato specificato un piano
 if (!isset($_GET['id'])) {
     echo "<div class='message error'>Piano di studio non specificato.</div>";
-    include_once '../../ui/includes/footer_view.php';
+    include_once getAbsolutePath('ui/includes/footer_view.php');
     exit;
 }
 
@@ -23,7 +27,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer_view.php';
+    include_once getAbsolutePath('ui/includes/footer_view.php');
     exit;
 }
 
@@ -35,7 +39,7 @@ $piano_info = $piano->readOne();
 // Verifica se il piano esiste e se l'utente può visualizzarlo
 if (!$piano_info) {
     echo "<div class='message error'>Piano di studio non trovato.</div>";
-    include_once '../../ui/includes/footer_view.php';
+    include_once getAbsolutePath('ui/includes/footer_view.php');
     exit;
 }
 
@@ -44,7 +48,7 @@ if ($piano_info['visibility'] == 'private' &&
     (!isset($_SESSION['user_id']) || 
      ($piano_info['user_id'] != $_SESSION['user_id'] && !$_SESSION['is_admin']))) {
     echo "<div class='message error'>Non hai i permessi per visualizzare questo piano di studio.</div>";
-    include_once '../../ui/includes/footer_view.php';
+    include_once getAbsolutePath('ui/includes/footer_view.php');
     exit;
 }
 
@@ -73,7 +77,7 @@ if ($risultato_commenti && !empty($risultato_commenti['message'])) {
 
 <div class="breadcrumb">
     <ul>
-        <li><a href="../index.php">Home</a></li>
+        <li><a href="<?php echo getUrlPath('pages/index.php'); ?>">Home</a></li>
         <li><?php echo htmlspecialchars($piano_info['nome']); ?></li>
     </ul>
 </div>
@@ -110,13 +114,13 @@ if ($risultato_commenti && !empty($risultato_commenti['message'])) {
                         <div class='item-description'>" . nl2br(htmlspecialchars($descrizione)) . "</div>
                         <div class='item-actions'>";
                 
-                echo "<a href='view_esame.php?id={$id}'>Visualizza Dettagli</a>";
+                echo "<a href='" . getUrlPath('pages/view_pages/view_esame.php?id=' . $id) . "'>Visualizza Dettagli</a>";
                 
                 // Mostra opzioni di modifica se l'utente è proprietario o admin
                 if (isset($_SESSION['user_id']) && 
                     ($piano_info['user_id'] == $_SESSION['user_id'] || 
                      (isset($_SESSION['is_admin']) && $_SESSION['is_admin']))) {
-                    echo " | <a href='../esami.php?edit={$id}&piano_id={$piano_info['id']}'>Modifica</a>";
+                    echo " | <a href='" . getUrlPath('pages/esami.php?edit=' . $id . '&piano_id=' . $piano_info['id']) . "'>Modifica</a>";
                 }
                 
                 echo "</div>
@@ -131,12 +135,12 @@ if ($risultato_commenti && !empty($risultato_commenti['message'])) {
     
     <?php if (isset($_SESSION['user_id']) && ($piano_info['user_id'] == $_SESSION['user_id'] || (isset($_SESSION['is_admin']) && $_SESSION['is_admin']))): ?>
     <div class="piano-actions">
-        <a href="../esami.php?piano_id=<?php echo $piano_info['id']; ?>" class="btn-primary">Gestisci Esami</a>
-        <a href="../index.php?edit=<?php echo $piano_info['id']; ?>" class="btn-secondary">Modifica Piano</a>
+        <a href="<?php echo getUrlPath('pages/esami.php?piano_id=' . $piano_info['id']); ?>" class="btn-primary">Gestisci Esami</a>
+        <a href="<?php echo getUrlPath('pages/index.php?edit=' . $piano_info['id']); ?>" class="btn-secondary">Modifica Piano</a>
     </div>
     <?php elseif (!isset($_SESSION['user_id'])): ?>
     <div class="piano-actions">
-        <p>Per creare il tuo piano di studio, <a href="../login.php">accedi</a> o <a href="../register.php">registrati</a>.</p>
+        <p>Per creare il tuo piano di studio, <a href="<?php echo getUrlPath('pages/login.php'); ?>">accedi</a> o <a href="<?php echo getUrlPath('pages/register.php'); ?>">registrati</a>.</p>
     </div>
     <?php endif; ?>
     
@@ -144,4 +148,4 @@ if ($risultato_commenti && !empty($risultato_commenti['message'])) {
     <?php renderCommentiPiani($db, $piano_info['id']); ?>
 </div>
 
-<?php include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso ?>
+<?php include_once getAbsolutePath('ui/includes/footer_view.php'); ?>

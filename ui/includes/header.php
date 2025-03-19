@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Include the path utilities
+require_once dirname(dirname(__DIR__)) . '/config/paths.php';
+
 // Pagine accessibili a tutti (anche senza login)
 $public_pages = ['index.php', 'login.php', 'register.php', 'view_piano.php', 'view_esame.php', 'view_argomento.php', 'view_esercizio.php', 'view_sottoargomento.php'];
 
@@ -10,20 +13,12 @@ $requires_auth = !in_array($current_page, $public_pages);
 
 // Se la pagina richiede autenticazione e l'utente non è loggato, reindirizza al login
 if($requires_auth && !isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: " . getUrlPath('pages/login.php'));
     exit;
 }
 
-// Determina il percorso base corretto in base al nome del file$base_path = "";
-$current_path = $_SERVER['PHP_SELF'];
-$project_root = "/ProgAle/"; // Imposta qui la cartella base del tuo progetto
-
-// Conta quanti livelli di directory ci sono dopo la radice del progetto
-$path_after_root = substr($current_path, strpos($current_path, $project_root) + strlen($project_root));
-$dir_levels = count(explode('/', trim($path_after_root, '/'))) - 1;
-
-// Genera il percorso base corretto
-$base_path = str_repeat("../", $dir_levels);
+// Get the base path prefix for all resources
+$base_path = getBasePathPrefix();
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -33,17 +28,12 @@ $base_path = str_repeat("../", $dir_levels);
     <title>Sistema Gestione Piani di Studio</title>
     <style>
 <?php
-  // Leggi il contenuto del file CSS e incorporalo direttamente
-  $css_file = $_SERVER['DOCUMENT_ROOT'] . '/ui/css/style.css';
+  // Usa il percorso assoluto per caricare il CSS
+  $css_file = getAbsolutePath('ui/css/style.css');
   if (file_exists($css_file)) {
     echo file_get_contents($css_file);
   } else {
-    // Fallback se il percorso diretto non funziona
-    $relative_path = $base_path . 'ui/css/style.css';
-    $relative_file = realpath(dirname(__FILE__) . '/' . $relative_path);
-    if (file_exists($relative_file)) {
-      echo file_get_contents($relative_file);
-    }
+    echo "/* CSS file not found: $css_file */";
   }
 ?>
 </style>
@@ -55,24 +45,24 @@ $base_path = str_repeat("../", $dir_levels);
             
             <nav>
                 <ul class="main-menu">
-                    <li><a href="<?php echo $base_path; ?>pages/index.php">Home</a></li>
+                    <li><a href="<?php echo getUrlPath('pages/index.php'); ?>">Home</a></li>
                     <?php if(isset($_SESSION['user_id'])): ?>
-                        <li><a href="<?php echo $base_path; ?>pages/my_piani.php">I Miei Piani</a></li>
-                        <li><a href="<?php echo $base_path; ?>pages/esami.php">Esami</a></li>
-                        <li><a href="<?php echo $base_path; ?>pages/argomenti.php">Argomenti</a></li>
-                        <li><a href="<?php echo $base_path; ?>pages/sottoargomenti.php">Sottoargomenti</a></li>
-                        <li><a href="<?php echo $base_path; ?>pages/esercizi.php">Esercizi</a></li>
-                        <li><a href="<?php echo $base_path; ?>pages/formule.php">Formule</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/my_piani.php'); ?>">I Miei Piani</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/esami.php'); ?>">Esami</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/argomenti.php'); ?>">Argomenti</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/sottoargomenti.php'); ?>">Sottoargomenti</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/esercizi.php'); ?>">Esercizi</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/formule.php'); ?>">Formule</a></li>
                         <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
-                            <li><a href="<?php echo $base_path; ?>pages/admin/users.php">Gestione Utenti</a></li>
+                            <li><a href="<?php echo getUrlPath('pages/admin/users.php'); ?>">Gestione Utenti</a></li>
                         <?php endif; ?>
-                        <li><a href="<?php echo $base_path; ?>pages/logout.php">Logout</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/logout.php'); ?>">Logout</a></li>
                     <?php else: ?>
-                        <li><a href="<?php echo $base_path; ?>pages/login.php">Accedi</a></li>
-                        <li><a href="<?php echo $base_path; ?>pages/register.php">Registrati</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/login.php'); ?>">Accedi</a></li>
+                        <li><a href="<?php echo getUrlPath('pages/register.php'); ?>">Registrati</a></li>
                     <?php endif; ?>
                     <li class="search-item">
-                        <form action="<?php echo $base_path; ?>pages/search.php" method="GET" class="search-form">
+                        <form action="<?php echo getUrlPath('pages/search.php'); ?>" method="GET" class="search-form">
                             <input type="text" name="q" placeholder="Cerca in tutto il sistema..." required>
                             <button type="submit">Cerca</button>
                             <!-- Container per i risultati della ricerca in tempo reale -->

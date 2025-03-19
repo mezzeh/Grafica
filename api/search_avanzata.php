@@ -4,11 +4,14 @@
  * Restituisce risultati in formato JSON per l'autocompletamento
  */
 
+// Includi il file di configurazione dei percorsi
+require_once __DIR__ . '/../config/paths.php';
+
 // Includi file di configurazione con percorsi corretti
-include_once '../config/database.php';
-include_once '../models/argomento.php';
-include_once '../models/sottoargomento.php';
-include_once '../models/esercizio.php';
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/argomento.php');
+include_once getAbsolutePath('models/sottoargomento.php');
+include_once getAbsolutePath('models/esercizio.php');
 
 // Abilita CORS per le chiamate AJAX
 header("Access-Control-Allow-Origin: *");

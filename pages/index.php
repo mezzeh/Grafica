@@ -1,15 +1,13 @@
-
-
 <?php
+// Include path utilities
+require_once dirname(__DIR__) . '/config/paths.php';
+
 // Includi header
-include_once '../ui/includes/header.php';
+include_once getAbsolutePath('ui/includes/header.php');
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/piano_di_studio.php';
-header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
-header("Expires: 0");
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/piano_di_studio.php');
 
 // Inizializza variabili per messaggi
 $message = "";
@@ -27,7 +25,7 @@ if (!$db) {
     $piano = new PianoDiStudio($db);
 
     // Includi handler per le operazioni CRUD
-    include_once 'handlers/piano_handler.php';
+    include_once getAbsolutePath('pages/handlers/piano_handler.php');
 
     // Mostra il messaggio se presente
     if (!empty($message)) {
@@ -40,7 +38,7 @@ if (!$db) {
     if(isset($_SESSION['user_id'])) {
         echo "<button id='showCreateFormBtn' class='btn-primary'>Aggiungi Nuovo Piano</button>";
     } else {
-        echo "<p>Per creare il tuo piano di studio, <a href='login.php'>accedi</a> o <a href='register.php'>registrati</a>.</p>";
+        echo "<p>Per creare il tuo piano di studio, <a href='" . getUrlPath('pages/login.php') . "'>accedi</a> o <a href='" . getUrlPath('pages/register.php') . "'>registrati</a>.</p>";
     }
     echo "</div>";
     
@@ -66,7 +64,7 @@ if (!$db) {
                     <div class='item-meta'>Creato da: " . htmlspecialchars($creator) . "</div>
                     <div class='item-description'>" . htmlspecialchars($descrizione) . "</div>
                     <div class='item-actions'>
-                        <a href='view_pages/view_piano.php?id=$id'>Visualizza</a>";
+                        <a href='" . getUrlPath('pages/view_pages/view_piano.php?id=' . $id) . "'>Visualizza</a>";
             
             // Mostra i pulsanti di modifica solo se l'utente è loggato ed è il proprietario o admin
             if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $user_id || isset($_SESSION['is_admin']) && $_SESSION['is_admin'])) {
@@ -85,18 +83,18 @@ if (!$db) {
     // Se l'utente è loggato, mostra un link ai suoi piani
     if(isset($_SESSION['user_id'])) {
         echo '<div class="header-with-button">';
-        echo '<h2><a href="my_piani.php" class="btn-primary">I miei piani di studio</a></h2>';
+        echo '<h2><a href="' . getUrlPath('pages/my_piani.php') . '" class="btn-primary">I miei piani di studio</a></h2>';
         echo '</div>';
     }
     
     // Includi il form appropriato in base alla richiesta
     if (isset($_GET['edit'])) {
-        include_once 'components/forms/edit_piano.php';
+        include_once getAbsolutePath('pages/components/forms/edit_piano.php');
     } else {
-        include_once 'components/forms/create_piano.php';
+        include_once getAbsolutePath('pages/components/forms/create_piano.php');
     }
 }
 
 // Includi footer
-include_once '../ui/includes/footer.php';
+include_once getAbsolutePath('ui/includes/footer.php');
 ?>
