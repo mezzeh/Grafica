@@ -1,8 +1,13 @@
 <?php
 // File: pages/components/comments/comments.php
 
+// Include path utilities if not already included
+if (!function_exists('getUrlPath')) {
+    require_once dirname(dirname(dirname(__DIR__))) . '/config/paths.php';
+}
+
 // Includi i componenti necessari
-include_once 'comment_list.php';
+include_once getAbsolutePath('pages/components/comments/comment_list.php');
 
 /**
  * Base function for comment management
@@ -140,7 +145,7 @@ function gestioneCommenti($db, $tipo_elemento, $elemento_id, $redirect_base) {
  * Funzione per gestire i commenti dei piani di studio
  */
 function gestioneCommentiPiani($db, $piano_id) {
-    $redirect_base = "view_piano.php?id={$piano_id}";
+    $redirect_base = getUrlPath("pages/view_pages/view_piano.php?id={$piano_id}");
     return gestioneCommenti($db, 'piano', $piano_id, $redirect_base);
 }
 
@@ -156,7 +161,7 @@ function renderCommentiPiani($db, $piano_id) {
  * Funzione per gestire i commenti degli esami
  */
 function gestioneCommentiEsami($db, $esame_id) {
-    $redirect_base = "view_esame.php?id={$esame_id}";
+    $redirect_base = getUrlPath("pages/view_pages/view_esame.php?id={$esame_id}");
     return gestioneCommenti($db, 'esame', $esame_id, $redirect_base);
 }
 
@@ -173,7 +178,7 @@ function renderCommentiEsami($db, $esame_id) {
  */
 function gestioneCommentiArgomenti($db, $esame_id, $argomento_id) {
     // Modifica il reindirizzamento per puntare alla pagina di dettaglio
-    $redirect_base = "view_argomento.php?id={$argomento_id}";
+    $redirect_base = getUrlPath("pages/view_pages/view_argomento.php?id={$argomento_id}");
     return gestioneCommenti($db, 'argomento', $argomento_id, $redirect_base);
 }
 
@@ -190,7 +195,7 @@ function renderCommentiArgomenti($db, $esame_id, $argomento_id) {
  * Funzione per gestire i commenti degli esercizi
  */
 function gestioneCommentiEsercizi($db, $esercizio_id) {
-    $redirect_base = "view_esercizio.php?id={$esercizio_id}";
+    $redirect_base = getUrlPath("pages/view_pages/view_esercizio.php?id={$esercizio_id}");
     return gestioneCommenti($db, 'esercizio', $esercizio_id, $redirect_base);
 }
 
@@ -206,7 +211,7 @@ function renderCommentiEsercizi($db, $esercizio_id) {
  * Funzione per gestire i commenti dei sottoargomenti
  */
 function gestioneCommentiSottoargomenti($db, $sottoargomento_id) {
-    $redirect_base = "view_sottoargomento.php?id={$sottoargomento_id}";
+    $redirect_base = getUrlPath("pages/view_pages/view_sottoargomento.php?id={$sottoargomento_id}");
     return gestioneCommenti($db, 'sottoargomento', $sottoargomento_id, $redirect_base);
 }
 
@@ -222,7 +227,7 @@ function renderCommentiSottoargomenti($db, $sottoargomento_id) {
  * Funzione per gestire i commenti delle formule
  */
 function gestioneCommentiFormule($db, $formula_id) {
-    $redirect_base = "view_formula.php?id={$formula_id}";
+    $redirect_base = getUrlPath("pages/view_pages/view_formula.php?id={$formula_id}");
     return gestioneCommenti($db, 'formula', $formula_id, $redirect_base);
 }
 

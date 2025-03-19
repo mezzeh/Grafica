@@ -16,7 +16,7 @@ function generaBreadcrumb($items) {
     echo "<ul>";
     foreach ($items as $item) {
         if (isset($item['link'])) {
-            // If link starts with http or /, use it as is, otherwise prepend with URL path
+            // Se il link inizia con http o /, usalo così com'è, altrimenti preponi con getUrlPath
             $url = (preg_match('~^(https?:)?//~', $item['link']) || substr($item['link'], 0, 1) === '/') 
                 ? $item['link'] 
                 : getUrlPath($item['link']);
