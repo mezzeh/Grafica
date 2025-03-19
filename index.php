@@ -6,7 +6,7 @@ echo "dioca";
 //header("Location: app/pages/index.php");
 echo "Test Aruba - " . date("Y-m-d H:i:s");
 
-$host = "localhost";
+$host = "31.11.39.210";
 $db_name = "Sql1853582_1";
 $username = "Sql1853582";
 $password = "A5qSUd5JM94t-.E";
