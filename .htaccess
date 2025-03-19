@@ -1,7 +1,15 @@
-# Reindirizzamento alla sottocartella
-RewriteEngine On
-RewriteCond %{REQUEST_URI} ^/$
-RewriteRule ^(.*)$ index.php [L,R=301]
+# Imposta la directory index predefinita
+DirectoryIndex pages/index.php
 
-DirectoryIndex index.php
-# Imposta inoltre il DirectoryIndex come fallback
+# Abilita il motore di rewrite
+RewriteEngine On
+
+# Se la richiesta è per la root, reindirizza a pages/index.php
+RewriteRule ^$ pages/index.php [L]
+
+# Permetti l'accesso diretto ai file e directory esistenti
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Opzionale: gestione degli errori 404
+ErrorDocument 404 /pages/404.php

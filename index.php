@@ -1,5 +1,5 @@
 <?php
-// Redirect to the main pages index - with correct path
+// Reindirizza direttamente alla pagina principale
 header("Location: /pages/index.php");
 exit;
 ?>
