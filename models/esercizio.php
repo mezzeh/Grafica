@@ -175,7 +175,7 @@ class Esercizio {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['total_rows'];
     }
-    <?php
+    
 // Aggiungi questi metodi alla classe Esercizio nel file models/esercizio.php
 
 // Associa una formula a un esercizio
@@ -243,3 +243,4 @@ public function isFormulaAssociated($esercizio_id, $formula_id) {
     return ($row['count'] > 0);
 }
 }
+?>
