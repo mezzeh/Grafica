@@ -4,14 +4,14 @@
  * Central file to handle all path-related functionality
  */
 
-// Define the document root path (should point to www.boshco.it)
+// Define the document root path
 define('DOC_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
-// Define the project root path - adjust if needed
-define('PROJECT_ROOT', DOC_ROOT . '/ProgAle');
+// Define the project root path (root of the website)
+define('PROJECT_ROOT', DOC_ROOT);
 
-// Define web root for URLs
-define('WEB_ROOT', '/ProgAle');
+// Define web root for URLs (empty string means site is at web root)
+define('WEB_ROOT', '');
 
 /**
  * Get the absolute file system path to a resource
