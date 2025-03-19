@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
     requisitoSearchInputs.forEach(function (input) {
         // Crea un container per i risultati
         const resultsContainer = document.createElement('div');
-        resultsContainer.className = 'requisito-search-results';
+        resultsContainer.className = 'search-results-dropdown';
         resultsContainer.style.display = 'none';
-        input.parentNode.insertBefore(resultsContainer, input.nextSibling);
+        input.parentNode.appendChild(resultsContainer);
 
         // Variabile per tenere traccia del timeout
         let searchTimeout;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Attendi 300ms prima di eseguire la ricerca (per evitare troppe richieste)
             searchTimeout = setTimeout(function () {
                 // Percorso all'API di ricerca
-                const apiUrl = '/ProgAle/api/search_avanzata.php';
+                const apiUrl = '/api/search_avanzata.php';
 
                 // Esegui la ricerca tramite AJAX
                 fetch(`${apiUrl}?q=${encodeURIComponent(query)}&type=${type}`)
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Per ogni risultato
                         data.forEach(function (item) {
                             const resultItem = document.createElement('div');
-                            resultItem.className = 'requisito-search-item';
+                            resultItem.className = 'search-result-item';
 
                             // Icone per i diversi tipi
                             let icon = '';
@@ -72,14 +72,16 @@ document.addEventListener('DOMContentLoaded', function () {
                                 case 'esercizio':
                                     icon = '📝';
                                     break;
+                                default:
+                                    icon = '🔍';
                             }
 
                             resultItem.innerHTML = `
-                                <span class="result-icon">${icon}</span>
-                                <span class="result-content">
-                                    <span class="result-title">${item.name}</span>
-                                    <small class="result-type">${item.type}</small>
-                                </span>
+                                <div class="result-icon">${icon}</div>
+                                <div class="result-content">
+                                    <div class="result-title">${item.name}</div>
+                                    <div class="result-type">${capitalizeFirstLetter(item.type)}</div>
+                                </div>
                             `;
 
                             // Al click sul risultato
@@ -99,19 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 // Aggiorna l'etichetta del tipo se presente
                                 const typeLabel = document.getElementById(input.getAttribute('data-type-label'));
                                 if (typeLabel) {
-                                    let typeName = '';
-                                    switch (item.type) {
-                                        case 'argomento':
-                                            typeName = 'Argomento';
-                                            break;
-                                        case 'sottoargomento':
-                                            typeName = 'Sottoargomento';
-                                            break;
-                                        case 'esercizio':
-                                            typeName = 'Esercizio';
-                                            break;
-                                    }
-                                    typeLabel.textContent = typeName;
+                                    typeLabel.textContent = capitalizeFirstLetter(item.type);
                                 }
                             });
 
@@ -143,4 +133,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // Funzione per capitalizzare la prima lettera
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 });
