@@ -72,8 +72,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 case 'esercizio':
                                     icon = '📝';
                                     break;
-                                default:
-                                    icon = '🔍';
+                                case 'formula':
+                                    icon = '➗'; // Icona per le formule
+                                    break;
                             }
 
                             resultItem.innerHTML = `
@@ -90,6 +91,16 @@ document.addEventListener('DOMContentLoaded', function () {
                                 const hiddenField = document.getElementById(input.getAttribute('data-target'));
                                 if (hiddenField) {
                                     hiddenField.value = `${item.type}|${item.id}`;
+
+                                    // Trigger di un evento input per i listener
+                                    const event = new Event('input', { bubbles: true });
+                                    hiddenField.dispatchEvent(event);
+
+                                    // Se il campo ha la proprietà value, forza una modifica di attributo
+                                    // per gli observer di attributi
+                                    if (hiddenField.hasAttribute('value')) {
+                                        hiddenField.setAttribute('value', `${item.type}|${item.id}`);
+                                    }
                                 }
 
                                 // Aggiorna il campo di input con il nome
@@ -101,7 +112,22 @@ document.addEventListener('DOMContentLoaded', function () {
                                 // Aggiorna l'etichetta del tipo se presente
                                 const typeLabel = document.getElementById(input.getAttribute('data-type-label'));
                                 if (typeLabel) {
-                                    typeLabel.textContent = capitalizeFirstLetter(item.type);
+                                    let typeName = '';
+                                    switch (item.type) {
+                                        case 'argomento':
+                                            typeName = 'Argomento';
+                                            break;
+                                        case 'sottoargomento':
+                                            typeName = 'Sottoargomento';
+                                            break;
+                                        case 'esercizio':
+                                            typeName = 'Esercizio';
+                                            break;
+                                        case 'formula':
+                                            typeName = 'Formula';
+                                            break;
+                                    }
+                                    typeLabel.textContent = typeName;
                                 }
                             });
 
