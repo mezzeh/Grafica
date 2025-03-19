@@ -175,5 +175,72 @@ class Esercizio {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['total_rows'];
     }
+    <?php
+// Aggiungi questi metodi alla classe Esercizio nel file models/esercizio.php
+
+// Associa una formula a un esercizio
+public function addFormula($esercizio_id, $formula_id) {
+    $query = "INSERT INTO esercizio_formula
+              SET esercizio_id = :esercizio_id, formula_id = :formula_id";
+    
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":esercizio_id", $esercizio_id);
+    $stmt->bindParam(":formula_id", $formula_id);
+    
+    return $stmt->execute();
+}
+
+// Rimuovi l'associazione tra un esercizio e una formula
+public function removeFormula($esercizio_id, $formula_id) {
+    $query = "DELETE FROM esercizio_formula
+              WHERE esercizio_id = :esercizio_id AND formula_id = :formula_id";
+    
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":esercizio_id", $esercizio_id);
+    $stmt->bindParam(":formula_id", $formula_id);
+    
+    return $stmt->execute();
+}
+
+// Rimuovi tutte le associazioni per un esercizio
+public function removeAllFormule($esercizio_id) {
+    $query = "DELETE FROM esercizio_formula
+              WHERE esercizio_id = :esercizio_id";
+    
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":esercizio_id", $esercizio_id);
+    
+    return $stmt->execute();
+}
+
+// Ottieni tutte le formule associate a un esercizio
+public function getAssociatedFormule($esercizio_id) {
+    $query = "SELECT f.*
+              FROM formule f
+              JOIN esercizio_formula ef ON f.id = ef.formula_id
+              WHERE ef.esercizio_id = :esercizio_id
+              ORDER BY f.nome ASC";
+    
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":esercizio_id", $esercizio_id);
+    $stmt->execute();
+    
+    return $stmt;
+}
+
+// Verifica se una formula è associata a un esercizio
+public function isFormulaAssociated($esercizio_id, $formula_id) {
+    $query = "SELECT COUNT(*) as count
+              FROM esercizio_formula
+              WHERE esercizio_id = :esercizio_id AND formula_id = :formula_id";
+    
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":esercizio_id", $esercizio_id);
+    $stmt->bindParam(":formula_id", $formula_id);
+    $stmt->execute();
+    
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ($row['count'] > 0);
+}
 }
 ?>

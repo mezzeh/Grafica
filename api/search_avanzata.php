@@ -12,6 +12,7 @@ include_once getAbsolutePath('config/database.php');
 include_once getAbsolutePath('models/argomento.php');
 include_once getAbsolutePath('models/sottoargomento.php');
 include_once getAbsolutePath('models/esercizio.php');
+include_once getAbsolutePath('models/formula.php'); // Aggiunto per la ricerca di formule
 
 // Abilita CORS per le chiamate AJAX
 header("Access-Control-Allow-Origin: *");
@@ -92,6 +93,23 @@ switch ($type) {
         }
         break;
         
+    case 'formula':
+        // Ricerca solo in formule
+        $formula = new Formula($db);
+        $stmt = $formula->search($query);
+        
+        if ($stmt && $stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $results[] = [
+                    'id' => $row['id'],
+                    'type' => 'formula',
+                    'name' => $row['nome'],
+                    'description' => $row['espressione']
+                ];
+            }
+        }
+        break;
+        
     default:
         // Ricerca in tutti i tipi
         
@@ -136,6 +154,21 @@ switch ($type) {
                     'type' => 'esercizio',
                     'name' => $row['titolo'],
                     'description' => substr($row['testo'], 0, 100) . '...'
+                ];
+            }
+        }
+        
+        // Ricerca in formule
+        $formula = new Formula($db);
+        $stmt = $formula->search($query);
+        
+        if ($stmt && $stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $results[] = [
+                    'id' => $row['id'],
+                    'type' => 'formula',
+                    'name' => $row['nome'],
+                    'description' => $row['espressione']
                 ];
             }
         }

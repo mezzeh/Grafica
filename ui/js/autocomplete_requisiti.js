@@ -72,6 +72,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 case 'esercizio':
                                     icon = '📝';
                                     break;
+                                case 'formula':
+                                    icon = '➗'; // Icona per le formule
+                                    break;
                             }
 
                             resultItem.innerHTML = `
@@ -119,6 +122,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                             break;
                                         case 'esercizio':
                                             typeName = 'Esercizio';
+                                            break;
+                                        case 'formula':
+                                            typeName = 'Formula';
                                             break;
                                     }
                                     typeLabel.textContent = typeName;
