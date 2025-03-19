@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $host = "localhost";
+    private $host = "localhos";
     private $db_name = "sistema_studio";
     private $username = "root";
     private $password = "";
