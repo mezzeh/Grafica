@@ -243,4 +243,3 @@ public function isFormulaAssociated($esercizio_id, $formula_id) {
     return ($row['count'] > 0);
 }
 }
-?>
