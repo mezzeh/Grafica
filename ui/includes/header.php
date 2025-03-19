@@ -34,7 +34,7 @@ $base_path = str_repeat("../", $dir_levels);
     <style>
 <?php
   // Leggi il contenuto del file CSS e incorporalo direttamente
-  $css_file = $_SERVER['DOCUMENT_ROOT'] . '/ProgAle/ui/css/style.css';
+  $css_file = $_SERVER['DOCUMENT_ROOT'] . '/ui/css/style.css';
   if (file_exists($css_file)) {
     echo file_get_contents($css_file);
   } else {
