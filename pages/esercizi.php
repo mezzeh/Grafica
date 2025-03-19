@@ -1,16 +1,19 @@
 <?php
+// Include path utilities
+require_once dirname(__DIR__) . '/config/paths.php';
+
 // Includi header
-include_once '../ui/includes/header.php';
+include_once getAbsolutePath('ui/includes/header.php');
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/esercizio.php';
-include_once '../models/sottoargomento.php';
-include_once '../models/argomento.php';
-include_once '../models/esame.php';
-include_once '../models/esercizio_correlato.php';
-include_once '../models/comments.php';
-include_once 'components/comments/comments.php';
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/esercizio.php');
+include_once getAbsolutePath('models/sottoargomento.php');
+include_once getAbsolutePath('models/argomento.php');
+include_once getAbsolutePath('models/esame.php');
+include_once getAbsolutePath('models/esercizio_correlato.php');
+include_once getAbsolutePath('models/comments.php');
+include_once getAbsolutePath('pages/components/comments/comments.php');
 
 // Connessione al database
 $database = new Database();
@@ -18,7 +21,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once getAbsolutePath('ui/includes/footer.php');
     exit;
 }
 
@@ -49,17 +52,17 @@ if ($sottoargomento_id) {
 }
 
 // Includi handler per le operazioni CRUD
-include_once 'handlers/esercizio_handler.php';
+include_once getAbsolutePath('pages/handlers/esercizio_handler.php');
 
 // Includi breadcrumb
-include_once 'components/shared/breadcrumb.php';
+include_once getAbsolutePath('pages/components/shared/breadcrumb.php');
 
 // Genera il breadcrumb
 if ($sottoargomento_id && $sottoargomento_info) {
     $breadcrumb_items = [
-        ['text' => 'Home', 'link' => 'index.php'],
-        ['text' => $esame_info['nome'], 'link' => 'view_esame.php?id=' . $esame_info['id']],
-        ['text' => $argomento_info['titolo'], 'link' => 'view_argomento.php?id=' . $argomento_info['id']],
+        ['text' => 'Home', 'link' => getUrlPath('pages/index.php')],
+        ['text' => $esame_info['nome'], 'link' => getUrlPath('pages/view_pages/view_esame.php?id=' . $esame_info['id'])],
+        ['text' => $argomento_info['titolo'], 'link' => getUrlPath('pages/view_pages/view_argomento.php?id=' . $argomento_info['id'])],
         ['text' => $sottoargomento_info['titolo']]
     ];
     generaBreadcrumb($breadcrumb_items);
@@ -111,8 +114,8 @@ if ($num > 0) {
                     " . nl2br(htmlspecialchars(substr($testo, 0, 200))) . (strlen($testo) > 200 ? "..." : "") . "
                 </div>
                 <div class='item-actions'>
-                    <a href='view_pages/view_esercizio.php?id=$id'>Visualizza</a> | 
-                    <a href='requisiti.php?esercizio_id=$id'>Requisiti</a>";
+                    <a href='" . getUrlPath('pages/view_pages/view_esercizio.php?id=' . $id) . "'>Visualizza</a> | 
+                    <a href='" . getUrlPath('pages/requisiti.php?esercizio_id=' . $id) . "'>Requisiti</a>";
         
         // Azioni di modifica/eliminazione
         if (isset($_SESSION['user_id'])) {
@@ -129,10 +132,10 @@ if ($num > 0) {
 
 // Includi i form
 if (isset($_GET['edit'])) {
-    include_once 'components/forms/edit_esercizio.php';
+    include_once getAbsolutePath('pages/components/forms/edit_esercizio.php');
 } else {
-    include_once 'components/forms/create_esercizio.php';
+    include_once getAbsolutePath('pages/components/forms/create_esercizio.php');
 }
 
-include_once '../ui/includes/footer.php';
+include_once getAbsolutePath('ui/includes/footer.php');
 ?>

@@ -1,15 +1,14 @@
 <?php
-// Enable error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Include path utilities
+require_once dirname(__DIR__) . '/config/paths.php';
 
 // Includi header
-include_once '../ui/includes/header.php';
+include_once getAbsolutePath('ui/includes/header.php');
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/esame.php';
-include_once '../models/piano_di_studio.php';
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/esame.php');
+include_once getAbsolutePath('models/piano_di_studio.php');
 
 // Inizializza variabili per messaggi
 $message = "";
@@ -21,7 +20,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once getAbsolutePath('ui/includes/footer.php');
     exit;
 }
 
@@ -35,21 +34,31 @@ $piano_info = null;
 if ($piano_id) {
     $piano->id = $piano_id;
     $piano_info = $piano->readOne();
+    
+    if (!$piano_info) {
+        echo "<div class='message error'>Piano di studio non trovato.</div>";
+        include_once getAbsolutePath('ui/includes/footer.php');
+        exit;
+    }
 }
+
 // Includi handler per le operazioni CRUD
-include_once 'handlers/esame_handler.php';
+include_once getAbsolutePath('pages/handlers/esame_handler.php');
 
 // Includi e usa il breadcrumb condiviso
-include_once 'components/shared/breadcrumb.php';
+include_once getAbsolutePath('pages/components/shared/breadcrumb.php');
 
+// Genera il breadcrumb se siamo in un contesto di piano
 if ($piano_id && $piano_info) {
     $breadcrumb_items = [
-        ['text' => 'Piani di Studio', 'link' => 'index.php'],
+        ['text' => 'Home', 'link' => getUrlPath('pages/index.php')],
+        ['text' => 'Piani di Studio', 'link' => getUrlPath('pages/index.php')],
         ['text' => $piano_info['nome']]
     ];
     
     generaBreadcrumb($breadcrumb_items);
 }
+
 // Mostra messaggio
 if (!empty($message)) {
     echo "<div class='message {$message_class}'>{$message}</div>";
@@ -90,8 +99,8 @@ if ($num > 0) {
                 {$piano_info_display}
                 <div class='item-description'>" . htmlspecialchars($descrizione) . "</div>
                 <div class='item-actions'>
-                    <a href='view_esame.php?id={$id}'>Visualizza</a> | 
-                    <a href='argomenti.php?esame_id={$id}'>Argomenti</a>";
+                    <a href='" . getUrlPath('pages/view_pages/view_esame.php?id=' . $id) . "'>Visualizza</a> | 
+                    <a href='" . getUrlPath('pages/argomenti.php?esame_id=' . $id) . "'>Argomenti</a>";
         
         // Azioni di modifica/eliminazione condizionali
         if (isset($_SESSION['user_id']) && verificaPermessiPiano($db, isset($piano_id) ? $piano_id : $piano_id)) {
@@ -108,10 +117,10 @@ if ($num > 0) {
 
 // Includi i form
 if (isset($_GET['edit'])) {
-    include_once 'components/forms/edit_esame.php';
+    include_once getAbsolutePath('pages/components/forms/edit_esame.php');
 } else {
-    include_once 'components/forms/create_esame.php';
+    include_once getAbsolutePath('pages/components/forms/create_esame.php');
 }
 
-include_once '../ui/includes/footer.php';
+include_once getAbsolutePath('ui/includes/footer.php');
 ?>

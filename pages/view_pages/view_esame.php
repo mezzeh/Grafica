@@ -73,7 +73,8 @@ echo "<a href='" . getUrlPath('pages/argomenti.php?esame_id=' . $esame_info['id'
 // Verifica i permessi per mostrare il pulsante di modifica
 if (isset($_SESSION['user_id']) && (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] || 
     $piano_info && $piano_info['user_id'] == $_SESSION['user_id'])) {
-echo "<a href='" . getUrlPath('pages/esami.php?edit=' . $esame_info['id'] . '&piano_id=' . $esame_info['piano_id']) . "' class='btn-secondary'>Modifica Esame</a>";}
+    echo " <a href='" . getUrlPath('pages/esami.php?edit=' . $esame_info['id'] . '&piano_id=' . $esame_info['piano_id']) . "' class='btn-secondary'>Modifica Esame</a>";
+}
 echo "</div>";
 echo "</div>";
 
@@ -97,4 +98,3 @@ renderCommentiEsami($db, $esame_id);
 ob_end_flush();
 
 include_once getAbsolutePath('ui/includes/footer_view.php');
-?>

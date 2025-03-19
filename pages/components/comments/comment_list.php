@@ -1,6 +1,11 @@
 <?php
 // File: pages/components/comments/comment_list.php
 
+// Include path utilities if not already included
+if (!function_exists('getUrlPath')) {
+    require_once dirname(dirname(dirname(__DIR__))) . '/config/paths.php';
+}
+
 /**
  * Renderizza la lista dei commenti per un elemento
  * 
@@ -26,7 +31,7 @@ function renderCommenti($db, $tipo_elemento, $elemento_id, $redirect_param) {
             </form>
         </div>
         <?php else: ?>
-            <p><a href="../login.php">Accedi</a> per aggiungere un commento.</p>    
+            <p><a href="<?php echo getUrlPath('pages/login.php'); ?>">Accedi</a> per aggiungere un commento.</p>    
         <?php endif; ?>
         
         <div class="comments-list">

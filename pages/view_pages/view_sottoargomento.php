@@ -1,18 +1,22 @@
 <?php
 // File: pages/view_pages/view_sottoargomento.php
-
 ob_start();
 
-// Includi header - correzione percorsi
-include_once '../../ui/includes/header_view.php';
+// Include path utilities
+require_once dirname(dirname(__DIR__)) . '/config/paths.php';
 
-// Includi file di configurazione e modelli - correzione percorsi
-include_once '../../config/database.php';
-include_once '../../models/sottoargomento.php';
-include_once '../../models/argomento.php';
-include_once '../../models/esame.php';
-include_once '../../models/esercizio.php';
-include_once '../../models/sottoargomento_requisito.php';
+// Includi header
+include_once getAbsolutePath('ui/includes/header_view.php');
+
+// Includi file di configurazione e modelli
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/sottoargomento.php');
+include_once getAbsolutePath('models/argomento.php');
+include_once getAbsolutePath('models/esame.php');
+include_once getAbsolutePath('models/esercizio.php');
+include_once getAbsolutePath('models/sottoargomento_requisito.php');
+include_once getAbsolutePath('models/comments.php');
+include_once getAbsolutePath('pages/components/comments/comments.php');
 
 // Connessione al database
 $database = new Database();
@@ -20,7 +24,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer.php';
+    include_once getAbsolutePath('ui/includes/footer_view.php');
     exit;
 }
 
@@ -36,7 +40,7 @@ $sottoargomento_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$sottoargomento_id) {
     echo "<div class='message error'>Nessun sottoargomento specificato.</div>";
-    include_once '../../ui/includes/footer.php';
+    include_once getAbsolutePath('ui/includes/footer_view.php');
     exit;
 }
 
@@ -46,7 +50,7 @@ $sottoargomento_info = $sottoargomento->readOne();
 
 if (!$sottoargomento_info) {
     echo "<div class='message error'>Sottoargomento non trovato.</div>";
-    include_once '../../ui/includes/footer.php';
+    include_once getAbsolutePath('ui/includes/footer_view.php');
     exit;
 }
 
@@ -58,17 +62,15 @@ $argomento_info = $argomento->readOne();
 $esame->id = $argomento_info['esame_id'];
 $esame_info = $esame->readOne();
 
-// Includi breadcrumb - correzione percorso
-include_once '../components/shared/breadcrumb.php';
-
 // Genera il breadcrumb
-$breadcrumb_items = [
-    ['text' => 'Home', 'link' => '../index.php'],
-    ['text' => $esame_info['nome'], 'link' => '../view_esame.php?id=' . $esame_info['id']],
-    ['text' => $argomento_info['titolo'], 'link' => '../view_pages/view_argomento.php?id=' . $argomento_info['id']],
-    ['text' => $sottoargomento_info['titolo']]
-];
-generaBreadcrumb($breadcrumb_items);
+echo "<div class='breadcrumb'>";
+echo "<ul>";
+echo "<li><a href='" . getUrlPath('pages/index.php') . "'>Home</a></li>";
+echo "<li><a href='" . getUrlPath('pages/esami.php?piano_id=' . $esame_info['piano_id']) . "'>" . htmlspecialchars($esame_info['nome']) . "</a></li>";
+echo "<li><a href='" . getUrlPath('pages/argomenti.php?esame_id=' . $argomento_info['esame_id']) . "'>" . htmlspecialchars($argomento_info['titolo']) . "</a></li>";
+echo "<li>" . htmlspecialchars($sottoargomento_info['titolo']) . "</li>";
+echo "</ul>";
+echo "</div>";
 ?>
 
 <div class="sottoargomento-view">
@@ -85,7 +87,7 @@ generaBreadcrumb($breadcrumb_items);
         </div>
     </div>
     
-    <!-- Nuova sezione per i requisiti -->
+    <!-- Sezione per i requisiti -->
     <div class="sottoargomento-requisiti">
         <h3>Requisiti Preliminari</h3>
         <?php
@@ -104,9 +106,9 @@ generaBreadcrumb($breadcrumb_items);
                     $link_url = '';
                     
                     if ($row['requisito_tipo'] === 'argomento') {
-                        $link_url = '../view_pages/view_argomento.php?id=' . $row['requisito_id'];
+                        $link_url = getUrlPath('pages/view_pages/view_argomento.php?id=' . $row['requisito_id']);
                     } else if ($row['requisito_tipo'] === 'sottoargomento') {
-                        $link_url = 'view_sottoargomento.php?id=' . $row['requisito_id'];
+                        $link_url = getUrlPath('pages/view_pages/view_sottoargomento.php?id=' . $row['requisito_id']);
                     }
                     
                     if (!empty($link_url)) {
@@ -146,7 +148,7 @@ generaBreadcrumb($breadcrumb_items);
                         <div class='item-meta'>Difficoltà: $difficolta_text</div>
                         <div class='item-description'>" . nl2br(htmlspecialchars(substr($testo, 0, 150))) . (strlen($testo) > 150 ? "..." : "") . "</div>
                         <div class='item-actions'>
-                            <a href='view_esercizio.php?id=$id'>Visualizza Esercizio</a>
+                            <a href='" . getUrlPath('pages/view_pages/view_esercizio.php?id=' . $id) . "'>Visualizza Esercizio</a>
                         </div>
                     </li>";
             }
@@ -154,24 +156,41 @@ generaBreadcrumb($breadcrumb_items);
         } else {
             echo "<p>Nessun esercizio trovato per questo sottoargomento.</p>";
             if (isset($_SESSION['user_id'])) {
-                echo "<a href='../esercizi.php?sottoargomento_id={$sottoargomento_id}' class='btn-primary'>Aggiungi Esercizi</a>";
+                echo "<a href='" . getUrlPath('pages/esercizi.php?sottoargomento_id=' . $sottoargomento_id) . "' class='btn-primary'>Aggiungi Esercizi</a>";
             }
         }
         ?>
     </div>
     
     <div class="sottoargomento-actions">
-        <a href="../esercizi.php?sottoargomento_id=<?php echo $sottoargomento_id; ?>" class="btn-primary">Gestisci Esercizi</a>
+        <a href="<?php echo getUrlPath('pages/esercizi.php?sottoargomento_id=' . $sottoargomento_id); ?>" class="btn-primary">Gestisci Esercizi</a>
         
         <?php if (isset($_SESSION['user_id'])): ?>
-            <a href="../requisiti_sottoargomento.php?sottoargomento_id=<?php echo $sottoargomento_id; ?>" class="btn-primary">Gestisci Requisiti</a>
-            <a href="../sottoargomenti.php?edit=<?php echo $sottoargomento_id; ?>&argomento_id=<?php echo $argomento_info['id']; ?>" class="btn-secondary">Modifica Sottoargomento</a>
+            <a href="<?php echo getUrlPath('pages/requisiti_sottoargomento.php?sottoargomento_id=' . $sottoargomento_id); ?>" class="btn-primary">Gestisci Requisiti</a>
+            <a href="<?php echo getUrlPath('pages/sottoargomenti.php?edit=' . $sottoargomento_id . '&argomento_id=' . $argomento_info['id']); ?>" class="btn-secondary">Modifica Sottoargomento</a>
         <?php endif; ?>
     </div>
 </div>
 
 <?php
+// Gestione dei commenti
+$risultato_commenti = gestioneCommentiSottoargomenti($db, $sottoargomento_id);
+
+// Se c'è un risultato con redirect, esegui il redirect
+if ($risultato_commenti && isset($risultato_commenti['redirect'])) {
+    header("Location: " . $risultato_commenti['redirect']);
+    exit;
+}
+
+// Mostra eventuali messaggi
+if ($risultato_commenti && !empty($risultato_commenti['message'])) {
+    echo "<div class='message {$risultato_commenti['message_class']}'>{$risultato_commenti['message']}</div>";
+}
+
+// Rendering dei commenti
+renderCommentiSottoargomenti($db, $sottoargomento_id);
+
 ob_end_flush();
 
-include_once '../../ui/includes/footer.php';
+include_once getAbsolutePath('ui/includes/footer_view.php');
 ?>

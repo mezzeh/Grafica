@@ -1,12 +1,15 @@
 <?php
+// Include path utilities
+require_once dirname(__DIR__) . '/config/paths.php';
+
 // Includi header
-include_once '../ui/includes/header.php';
+include_once getAbsolutePath('ui/includes/header.php');
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/sottoargomento.php';
-include_once '../models/argomento.php';
-include_once '../models/esame.php';
+include_once getAbsolutePath('config/database.php');
+include_once getAbsolutePath('models/sottoargomento.php');
+include_once getAbsolutePath('models/argomento.php');
+include_once getAbsolutePath('models/esame.php');
 
 // Connessione al database
 $database = new Database();
@@ -14,7 +17,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once getAbsolutePath('ui/includes/footer.php');
     exit;
 }
 
@@ -40,17 +43,17 @@ if ($argomento_id) {
 }
 
 // Includi handler per le operazioni CRUD
-include_once 'handlers/sottoargomento_handler.php';
+include_once getAbsolutePath('pages/handlers/sottoargomento_handler.php');
 
 // Includi breadcrumb
-include_once 'components/shared/breadcrumb.php';
+include_once getAbsolutePath('pages/components/shared/breadcrumb.php');
 
 // Genera il breadcrumb
 if ($argomento_id && $argomento_info) {
     $breadcrumb_items = [
-        ['text' => 'Piani di Studio', 'link' => 'index.php'],
-        ['text' => 'Esami', 'link' => 'esami.php?piano_id=' . $esame_info['piano_id']],
-        ['text' => $esame_info['nome'], 'link' => 'argomenti.php?esame_id=' . $esame_info['id']],
+        ['text' => 'Piani di Studio', 'link' => getUrlPath('pages/index.php')],
+        ['text' => 'Esami', 'link' => getUrlPath('pages/esami.php?piano_id=' . $esame_info['piano_id'])],
+        ['text' => $esame_info['nome'], 'link' => getUrlPath('pages/argomenti.php?esame_id=' . $esame_info['id'])],
         ['text' => $argomento_info['titolo']]
     ];
     generaBreadcrumb($breadcrumb_items);
@@ -95,8 +98,8 @@ if ($num > 0) {
                 <div class='item-meta'>Livello di profondità: {$livello_profondita}</div>
                 <div class='item-description'>" . htmlspecialchars($descrizione) . "</div>
                 <div class='item-actions'>
-                    <a href='view_pages/view_sottoargomento.php?id={$id}'>Visualizza</a> | 
-                    <a href='esercizi.php?sottoargomento_id={$id}'>Esercizi</a>";
+                    <a href='" . getUrlPath('pages/view_pages/view_sottoargomento.php?id=' . $id) . "'>Visualizza</a> | 
+                    <a href='" . getUrlPath('pages/esercizi.php?sottoargomento_id=' . $id) . "'>Esercizi</a>";
         
         // Azioni di modifica/eliminazione
         if (isset($_SESSION['user_id'])) {
@@ -113,10 +116,10 @@ if ($num > 0) {
 
 // Includi i form
 if (isset($_GET['edit'])) {
-    include_once 'components/forms/edit_sottoargomento.php';
+    include_once getAbsolutePath('pages/components/forms/edit_sottoargomento.php');
 } else {
-    include_once 'components/forms/create_sottoargomento.php';
+    include_once getAbsolutePath('pages/components/forms/create_sottoargomento.php');
 }
 
-include_once '../ui/includes/footer.php';
+include_once getAbsolutePath('ui/includes/footer.php');
 ?>
