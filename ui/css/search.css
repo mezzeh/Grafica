@@ -1,6 +1,138 @@
 /* Stili per il sistema di ricerca in tempo reale */
 
 /* Container dei risultati di ricerca */
+/* Stili per la ricerca dei requisiti */
+.requisito-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.requisito-search-results {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.requisito-search-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.requisito-search-item:hover {
+    background-color: #f5f5f5;
+}
+
+.requisito-search-item:last-child {
+    border-bottom: none;
+}
+
+.result-icon {
+    font-size: 18px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.result-content {
+    flex: 1;
+}
+
+.result-title {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.result-type {
+    font-size: 12px;
+    color: #666;
+}
+
+.no-results {
+    padding: 10px;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Stili per i tag selezionati */
+.selected-prerequisites-container {
+    margin-bottom: 20px;
+}
+
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 40px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.selected-tag {
+    display: flex;
+    align-items: center;
+    background-color: #e9f7ef;
+    border: 1px solid #b8e5ce;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.tag-type {
+    font-size: 12px;
+    color: #666;
+    margin-left: 5px;
+}
+
+.remove-tag {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 5px;
+    padding: 0 5px;
+}
+
+.remove-tag:hover {
+    color: #c0392b;
+}
+
+/* Miglioramenti responsivi */
+@media (max-width: 768px) {
+    .requisito-search-results {
+        max-height: 250px;
+    }
+
+    .selected-tag {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
 .search-results-dropdown {
     position: absolute;
     top: 100%;

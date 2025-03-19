@@ -88,6 +88,16 @@ document.addEventListener('DOMContentLoaded', function () {
                                 const hiddenField = document.getElementById(input.getAttribute('data-target'));
                                 if (hiddenField) {
                                     hiddenField.value = `${item.type}|${item.id}`;
+
+                                    // Trigger di un evento input per i listener
+                                    const event = new Event('input', { bubbles: true });
+                                    hiddenField.dispatchEvent(event);
+
+                                    // Se il campo ha la proprietà value, forza una modifica di attributo
+                                    // per gli observer di attributi
+                                    if (hiddenField.hasAttribute('value')) {
+                                        hiddenField.setAttribute('value', `${item.type}|${item.id}`);
+                                    }
                                 }
 
                                 // Aggiorna il campo di input con il nome
