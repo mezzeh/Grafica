@@ -92,3 +92,8 @@ come posso implementare il codice in un sito,
   configurare la mia macchina sql e php in modo che in questo 
   codice possa vedere in modo aggiornato tutto il database esistente, 
   o in futuro solo piccole parti 
+
+Visualizzazione profili.
+Aggiunta di appunti
+Renderlo piu intuitivo
+togliere la registrazione obbligatario
